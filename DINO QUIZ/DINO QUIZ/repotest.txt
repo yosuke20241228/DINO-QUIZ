@@ -1,2 +1,3 @@
 
-this is test. about using xcode to connect with github.
+
+this change is for yamasaki to under stand what is Github
