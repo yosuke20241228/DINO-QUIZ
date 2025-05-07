@@ -11,7 +11,7 @@ import SwiftUI
 struct DINO_QUIZApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            StartView()
         }
     }
 }

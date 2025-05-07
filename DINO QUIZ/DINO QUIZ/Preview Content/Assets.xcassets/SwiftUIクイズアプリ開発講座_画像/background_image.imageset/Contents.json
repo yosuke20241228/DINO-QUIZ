@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "filename" : "2ECB1BC7-79A5-4C01-BEED-2C264EBBB6E1_1_201_a.jpeg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "恐竜背景.jpeg",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
