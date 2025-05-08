@@ -18,13 +18,16 @@ struct QuizView: View {
     
     var body: some View {
         ZStack {
-            VStack {
-                Text("問題番号:\(currentQuestionIndex+1)/\(quizItems.count)")
+            VStack(spacing: 20) {
+                // 問題番号
+                Text("問題番号: \(currentQuestionIndex + 1)/\(quizItems.count)")
                     .font(.headline)
                     .padding(10)
-                    .background(.originalBrown)
+                    .background(Color.originalBrown)
                     .foregroundStyle(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
+                
+                // 質問
                 Text(quizItems[currentQuestionIndex].question)
                     .font(.title)
                     .padding()
@@ -32,9 +35,11 @@ struct QuizView: View {
                     .background(Color.originalLightGreen)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.originalGreen, lineWidth: 5)
+                            .stroke(Color.originalBrown, lineWidth: 5)
                     )
                     .frame(maxHeight: .infinity)
+                    .padding(.horizontal, 50)
+                // 選択肢ボタン
                 ForEach(quizItems[currentQuestionIndex].choices, id: \.self) { choice in
                     Button {
                         if choice == quizItems[currentQuestionIndex].correctAnswer {
@@ -46,7 +51,7 @@ struct QuizView: View {
                         
                         isShowingResultSymbol = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            self.isShowingResultSymbol = false
+                            isShowingResultSymbol = false
                             if currentQuestionIndex + 1 >= quizItems.count {
                                 isShowingScoreView = true
                                 return
@@ -55,20 +60,21 @@ struct QuizView: View {
                         }
                     } label: {
                         Text(choice)
-                            .frame(maxWidth: .infinity)
-                            .padding()
                             .font(.title.bold())
-                            .background(Color.originalSkin)
-                            .foregroundStyle(.originalBrown)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                    }
-                    .fullScreenCover(isPresented: $isShowingScoreView) {
-                        ScoreView(scoreText: "\(quizItems.count)問中\(correctCount)問正解！")
+                            .foregroundStyle(Color.originalBrown)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(Color.originalSkin)
+                            )
+                            .padding(.horizontal, 20)
                     }
                 }
             }
             .padding()
             
+            // 正誤シンボル表示
             if isShowingResultSymbol {
                 Text(isAnswerCorrect ? "○" : "✗")
                     .font(.system(size: 1000))
@@ -76,10 +82,13 @@ struct QuizView: View {
                     .foregroundStyle(isAnswerCorrect ? .green : .red)
                     .lineLimit(1)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(.black.opacity(0.5))
+                    .background(Color.black.opacity(0.5))
             }
         }
         .backgroundImage()
+        .fullScreenCover(isPresented: $isShowingScoreView) {
+            ScoreView(scoreText: "\(quizItems.count)問中\(correctCount)問正解！")
+        }
     }
 }
 

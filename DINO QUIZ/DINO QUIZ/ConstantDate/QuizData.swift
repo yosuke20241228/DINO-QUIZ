@@ -10,7 +10,7 @@ import SwiftUI
 struct QuizData {
     static let knowledgeQuestions: [QuizItem] = [
         QuizItem(
-            question: "次のうち、世界で最も速く走る動物はどれですか？",
+            question:  "次のうち、飛ぶことができない鳥はどれですか？",
             choices: ["チーター", "ライオン", "ウサイン・ボルト", "馬"],
             correctAnswer: "チーター"
         ),

@@ -12,42 +12,56 @@ struct GenreSelectionView: View {
     @State var selectedQuizData: [QuizItem] = []
     
     var body: some View {
-        VStack {
+        VStack(spacing: 20) {
+            // 初級
             Button {
                 selectedQuizData = QuizData.knowledgeQuestions
                 isShowingQuizView = true
             } label: {
-                Text("恐竜初級クイズ")
-                    .frame(maxWidth: .infinity)
-                    .padding()
+                Text("恐竜初級\nクイズ")
                     .font(.title.bold())
-                    .background(Color.originalSkin)
                     .foregroundStyle(Color.originalBrown)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color.originalSkin)
+                    )
+                    .padding(.horizontal, 110)
             }
+            
+            // 中級
             Button {
                 selectedQuizData = QuizData.tyuukyuuQuestions
                 isShowingQuizView = true
             } label: {
-                Text("恐竜中級クイズ")
-                    .frame(maxWidth: .infinity)
-                    .padding()
+                Text("恐竜中級\nクイズ")
                     .font(.title.bold())
-                    .background(Color.originalSkin)
                     .foregroundStyle(Color.originalBrown)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color.originalSkin)
+                    )
+                    .padding(.horizontal, 110)
             }
+            
+            // 上級
             Button {
                 selectedQuizData = QuizData.zyokyuuQuestions
                 isShowingQuizView = true
             } label: {
-                Text("恐竜上級クイズ")
-                    .frame(maxWidth: .infinity)
-                    .padding()
+                Text("恐竜上級\nクイズ")
                     .font(.title.bold())
-                    .background(Color.originalSkin)
                     .foregroundStyle(Color.originalBrown)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color.originalSkin)
+                    )
+                    .padding(.horizontal, 110)
             }
         }
         .padding()
