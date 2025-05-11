@@ -14,7 +14,7 @@ struct StartView: View {
         VStack {
             Spacer()
             Text("恐竜\nクイズ")
-                .font(.system(size: 80).bold())
+                .font(.system(size: 100).bold())
                 .foregroundStyle(.originalBrown)
                 .stroke(color: .originalLightGreen, width: 3)
                 .multilineTextAlignment(.center) // テキストを中央揃え

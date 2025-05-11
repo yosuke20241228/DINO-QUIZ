@@ -15,8 +15,8 @@ struct ScoreView: View {
             Spacer()
             Text(scoreText)
                 .font(.system(size: 40).bold())
-                .foregroundStyle(.originalYellow)
-                .stroke(color: .originalGreen, width: 5)
+                .foregroundStyle(.originalBlack)
+                .stroke(color: .originalSkin, width: 5)
             Spacer()
             Button {
                 let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -30,7 +30,7 @@ struct ScoreView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .backgroundImage()
+        .backgroundImage2()
     }
 }
 

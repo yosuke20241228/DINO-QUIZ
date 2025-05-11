@@ -7,12 +7,16 @@
 
 import SwiftUI
 
-struct View2: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+extension View {
+    @ViewBuilder
+    func backgroundImage2(_ image: Image = Image("background_image2")) -> some View {
+        ZStack {
+            image
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+            
+            self
+        }
     }
-}
-
-#Preview {
-    View2()
 }

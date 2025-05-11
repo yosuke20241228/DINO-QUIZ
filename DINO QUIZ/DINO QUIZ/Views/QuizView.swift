@@ -13,6 +13,7 @@ struct QuizView: View {
     @State var isAnswerCorrect = false
     @State var currentQuestionIndex = 0
     @State var correctCount = 0
+    @State var correctAnswerText: String? = nil // 不正解時の正解表示用
     
     @Binding var quizItems: [QuizItem]
     
@@ -39,19 +40,23 @@ struct QuizView: View {
                     )
                     .frame(maxHeight: .infinity)
                     .padding(.horizontal, 50)
+                
                 // 選択肢ボタン
                 ForEach(quizItems[currentQuestionIndex].choices, id: \.self) { choice in
                     Button {
                         if choice == quizItems[currentQuestionIndex].correctAnswer {
                             correctCount += 1
                             isAnswerCorrect = true
+                            correctAnswerText = nil
                         } else {
                             isAnswerCorrect = false
+                            correctAnswerText = "正解は「\(quizItems[currentQuestionIndex].correctAnswer)」でした"
                         }
                         
                         isShowingResultSymbol = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             isShowingResultSymbol = false
+                            correctAnswerText = nil
                             if currentQuestionIndex + 1 >= quizItems.count {
                                 isShowingScoreView = true
                                 return
@@ -83,6 +88,20 @@ struct QuizView: View {
                     .lineLimit(1)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.black.opacity(0.5))
+            }
+            
+            // 正解表示（不正解時のみ）
+            if isShowingResultSymbol, let answerText = correctAnswerText {
+                VStack {
+                    Spacer()
+                    Text(answerText)
+                        .font(.title2)
+                        .padding()
+                        .background(Color.white.opacity(0.8))
+                        .cornerRadius(10)
+                        .padding(.bottom, 60)
+                }
+                .transition(.opacity)
             }
         }
         .backgroundImage()
