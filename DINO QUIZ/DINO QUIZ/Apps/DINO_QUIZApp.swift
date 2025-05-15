@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import GoogleMobileAds
 
 @main
 struct DINO_QUIZApp: App {
+    init() {
+        MobileAds.shared.start(completionHandler: { _ in })
+    }
+    
     var body: some Scene {
         WindowGroup {
             StartView()

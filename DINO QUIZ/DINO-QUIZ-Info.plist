@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;plist version="1.0"&gt;
+&lt;string&gt;$(MARKETING_VERSION)&lt;/string&gt;
+&lt;/plist&gt;
+GADApplicationIdentifier</key>
+	<string>ca-app-pub-4544782797420932~9980181773</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-4544782797420932~9980181773</string>
+</dict>
+</plist>

@@ -13,7 +13,8 @@ struct QuizView: View {
     @State var isAnswerCorrect = false
     @State var currentQuestionIndex = 0
     @State var correctCount = 0
-    @State var correctAnswerText: String? = nil // 不正解時の正解表示用
+    @State var correctAnswerText: String? = nil
+    @State var finalScoreText: String? = nil  // ✅ 安全なスコア保持用
     
     @Binding var quizItems: [QuizItem]
     
@@ -41,7 +42,7 @@ struct QuizView: View {
                     .frame(maxHeight: .infinity)
                     .padding(.horizontal, 50)
                 
-                // 選択肢ボタン
+                // 選択肢
                 ForEach(quizItems[currentQuestionIndex].choices, id: \.self) { choice in
                     Button {
                         if choice == quizItems[currentQuestionIndex].correctAnswer {
@@ -58,6 +59,8 @@ struct QuizView: View {
                             isShowingResultSymbol = false
                             correctAnswerText = nil
                             if currentQuestionIndex + 1 >= quizItems.count {
+                                // ✅ スコアテキストを View が生きてるうちに保存
+                                finalScoreText = "\(quizItems.count)問中\(correctCount)問正解！"
                                 isShowingScoreView = true
                                 return
                             }
@@ -79,7 +82,7 @@ struct QuizView: View {
             }
             .padding()
             
-            // 正誤シンボル表示
+            // 正誤記号
             if isShowingResultSymbol {
                 Text(isAnswerCorrect ? "○" : "✗")
                     .font(.system(size: 1000))
@@ -90,7 +93,7 @@ struct QuizView: View {
                     .background(Color.black.opacity(0.5))
             }
             
-            // 正解表示（不正解時のみ）
+            // 不正解時の正解表示
             if isShowingResultSymbol, let answerText = correctAnswerText {
                 VStack {
                     Spacer()
@@ -106,7 +109,9 @@ struct QuizView: View {
         }
         .backgroundImage()
         .fullScreenCover(isPresented: $isShowingScoreView) {
-            ScoreView(scoreText: "\(quizItems.count)問中\(correctCount)問正解！")
+            if let text = finalScoreText {
+                ScoreView(scoreText: text)
+            }
         }
     }
 }
@@ -114,4 +119,5 @@ struct QuizView: View {
 #Preview {
     QuizView(quizItems: .constant(QuizData.knowledgeQuestions))
 }
+
 
