@@ -55,7 +55,7 @@ struct QuizData {
         QuizItem(
             question: "マプサウルスの狩りの方法は？",
             choices: ["待ち伏せ", "拳銃", "集団で追いかける", "空から襲う"],
-            correctAnswer: "ゾウ"
+            correctAnswer: "集団で追いかける"
         ),
         QuizItem(
             question: "植物の消化を助けるために飲み込んだ石をなんという？",

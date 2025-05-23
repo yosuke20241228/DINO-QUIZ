@@ -4,15 +4,12 @@
 //
 //  Created by 山﨑　陽介 on 2025/05/22.
 //
+import Foundation
 
-import SwiftUI
-
-struct AnswerRecord: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-#Preview {
-    AnswerRecord()
+struct AnswerRecord: Identifiable {
+    let id = UUID()
+    let question: String
+    let selectedAnswer: String
+    let correctAnswer: String
+    let isCorrect: Bool
 }

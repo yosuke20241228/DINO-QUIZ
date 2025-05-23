@@ -8,20 +8,20 @@
 import SwiftUI
 
 struct QuizView: View {
-    @State var isShowingScoreView = false
-    @State var isShowingResultSymbol = false
-    @State var isAnswerCorrect = false
-    @State var currentQuestionIndex = 0
-    @State var correctCount = 0
-    @State var correctAnswerText: String? = nil
-    @State var finalScoreText: String? = nil  // ✅ 安全なスコア保持用
+    @State private var currentQuestionIndex = 0
+    @State private var correctCount = 0
+    @State private var isShowingScoreView = false
+    @State private var answerHistory: [AnswerRecord] = []
+    
+    @State private var isAnswerCorrect = false
+    @State private var isShowingResultSymbol = false
+    @State private var correctAnswerText: String? = nil
     
     @Binding var quizItems: [QuizItem]
     
     var body: some View {
         ZStack {
             VStack(spacing: 20) {
-                // 問題番号
                 Text("問題番号: \(currentQuestionIndex + 1)/\(quizItems.count)")
                     .font(.headline)
                     .padding(10)
@@ -29,7 +29,6 @@ struct QuizView: View {
                     .foregroundStyle(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                 
-                // 質問
                 Text(quizItems[currentQuestionIndex].question)
                     .font(.title)
                     .padding()
@@ -42,29 +41,34 @@ struct QuizView: View {
                     .frame(maxHeight: .infinity)
                     .padding(.horizontal, 50)
                 
-                // 選択肢
-                ForEach(quizItems[currentQuestionIndex].choices, id: \.self) { choice in
+                ForEach(quizItems[currentQuestionIndex].choices, id: \ .self) { choice in
                     Button {
-                        if choice == quizItems[currentQuestionIndex].correctAnswer {
+                        let correct = choice == quizItems[currentQuestionIndex].correctAnswer
+                        isAnswerCorrect = correct
+                        correctAnswerText = correct ? nil : "正解は「\(quizItems[currentQuestionIndex].correctAnswer)」でした"
+                        
+                        if correct {
                             correctCount += 1
-                            isAnswerCorrect = true
-                            correctAnswerText = nil
-                        } else {
-                            isAnswerCorrect = false
-                            correctAnswerText = "正解は「\(quizItems[currentQuestionIndex].correctAnswer)」でした"
                         }
                         
+                        answerHistory.append(AnswerRecord(
+                            question: quizItems[currentQuestionIndex].question,
+                            selectedAnswer: choice,
+                            correctAnswer: quizItems[currentQuestionIndex].correctAnswer,
+                            isCorrect: correct
+                        ))
+                        
                         isShowingResultSymbol = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             isShowingResultSymbol = false
                             correctAnswerText = nil
+                            
                             if currentQuestionIndex + 1 >= quizItems.count {
-                                // ✅ スコアテキストを View が生きてるうちに保存
-                                finalScoreText = "\(quizItems.count)問中\(correctCount)問正解！"
                                 isShowingScoreView = true
-                                return
+                            } else {
+                                currentQuestionIndex += 1
                             }
-                            currentQuestionIndex += 1
                         }
                     } label: {
                         Text(choice)
@@ -82,7 +86,7 @@ struct QuizView: View {
             }
             .padding()
             
-            // 正誤記号
+            // ○×表示
             if isShowingResultSymbol {
                 Text(isAnswerCorrect ? "○" : "✗")
                     .font(.system(size: 1000))
@@ -93,7 +97,7 @@ struct QuizView: View {
                     .background(Color.black.opacity(0.5))
             }
             
-            // 不正解時の正解表示
+            // 正解のテキスト表示
             if isShowingResultSymbol, let answerText = correctAnswerText {
                 VStack {
                     Spacer()
@@ -109,15 +113,15 @@ struct QuizView: View {
         }
         .backgroundImage()
         .fullScreenCover(isPresented: $isShowingScoreView) {
-            if let text = finalScoreText {
-                ScoreView(scoreText: text)
-            }
+            ScoreView(
+                scoreText: "\(quizItems.count)問中\(correctCount)問正解！",
+                answerHistory: answerHistory
+            )
         }
     }
 }
 
+
 #Preview {
     QuizView(quizItems: .constant(QuizData.knowledgeQuestions))
 }
-
-

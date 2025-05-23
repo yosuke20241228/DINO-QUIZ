@@ -7,12 +7,36 @@
 
 import SwiftUI
 
-struct View3: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+extension View {
+    func getHostingController(completion: @escaping (UIViewController?) -> Void) -> some View {
+        background(HostingControllerFinder(completion: completion))
     }
 }
 
-#Preview {
-    View3()
+private struct HostingControllerFinder: UIViewControllerRepresentable {
+    let completion: (UIViewController?) -> Void
+    
+    func makeUIViewController(context: Context) -> UIViewControllerFinder {
+        UIViewControllerFinder(completion: completion)
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewControllerFinder, context: Context) {}
+}
+
+private class UIViewControllerFinder: UIViewController {
+    let completion: (UIViewController?) -> Void
+    
+    init(completion: @escaping (UIViewController?) -> Void) {
+        self.completion = completion
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
+    
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        DispatchQueue.main.async {
+            self.completion(parent)
+        }
+    }
 }

@@ -20,14 +20,16 @@ class RewardAdViewModel: NSObject, ObservableObject, FullScreenContentDelegate {
     func loadRewardAd() {
         let request = Request()
         
-        print("📡 広告ロード開始")
+        print("📡 広告ロード開始")  // ← デバッグ用
+        
         RewardedAd.load(with: "ca-app-pub-3940256099942544/5224354917", request: request) { ad, error in
             if let error = error {
                 print("❌ Ad load failed: \(error.localizedDescription)")
                 return
             }
             
-            print("✅ 広告ロード成功")
+            print("✅ 広告ロード成功")  // ← 成功ログ
+            
             self.rewardedAd = ad
             self.rewardedAd?.fullScreenContentDelegate = self
             self.isAdReady = true
@@ -40,8 +42,7 @@ class RewardAdViewModel: NSObject, ObservableObject, FullScreenContentDelegate {
             return
         }
         
-        print("📢 広告を表示します")
-        self.isAdReady = false
+        print("📢 広告を表示します")  // ← ここが出なければ present は呼ばれていない
         
         ad.present(from: rootViewController, userDidEarnRewardHandler: {
             let reward = ad.adReward
@@ -52,7 +53,7 @@ class RewardAdViewModel: NSObject, ObservableObject, FullScreenContentDelegate {
     }
     
     @objc func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
-        print("🔄 広告が閉じられました。次の読み込みを開始します")
+        print("🔄 広告が閉じられました。次の広告を読み込みます。")
         loadRewardAd()
     }
 }

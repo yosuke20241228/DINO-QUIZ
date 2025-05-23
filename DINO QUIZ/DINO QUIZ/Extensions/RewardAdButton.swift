@@ -7,27 +7,31 @@
 
 import SwiftUI
 import UIKit
-import GoogleMobileAds
 
 struct RewardAdButton: View {
-    @Binding var hasWatchedAd: Bool  // ✅ ScoreView側と状態連携
+    @Binding var isNavigating: Bool
     @StateObject var adViewModel = RewardAdViewModel()
+    @State private var currentVC: UIViewController?
     
     var body: some View {
-        Button("広告を見て報酬を得る") {
-            if let root = UIApplication.shared.connectedScenes
-                .compactMap({ $0 as? UIWindowScene })
-                .first?.windows.first?.rootViewController {
-                adViewModel.showAd(from: root) {
-                    print("報酬ゲット！")
-                    hasWatchedAd = true  // ✅ 状態更新
+        Button {
+            if let vc = currentVC {
+                adViewModel.showAd(from: vc) {
+                    isNavigating = true
                 }
             }
+        } label: {
+            Image(.topButton)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: .infinity)
         }
         .disabled(!adViewModel.isAdReady)
         .padding()
         .background(adViewModel.isAdReady ? Color.green : Color.gray)
-        .foregroundColor(.white)
         .cornerRadius(10)
+        .getHostingController { vc in
+            self.currentVC = vc
+        }
     }
 }

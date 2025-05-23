@@ -6,13 +6,32 @@
 //
 
 import SwiftUI
+import UIKit
 
-struct RewardLaunchButton2: View {
+struct RewardLaunchButton: View {
+    @Binding var isNavigatingToLookback: Bool
+    @StateObject var adViewModel = RewardAdViewModel()
+    @State private var currentVC: UIViewController?
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button {
+            if let vc = currentVC {
+                adViewModel.showAd(from: vc) {
+                    isNavigatingToLookback = true
+                }
+            }
+        } label: {
+            Image(.launch)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: .infinity)
+        }
+        .disabled(!adViewModel.isAdReady)
+        .padding()
+        .background(adViewModel.isAdReady ? Color.green : Color.gray)
+        .cornerRadius(10)
+        .getHostingController { vc in
+            self.currentVC = vc
+        }
     }
-}
-
-#Preview {
-    RewardLaunchButton2()
 }
